@@ -3,12 +3,28 @@ html, body {
 	margin: 0;
 	width: 100%;
 	height: 100%;
+	font-family: Arial, verdana, sans-serif;
+	font-size: 13px;
+	line-height: 16px;
+}
+
+button {
+	padding: 8px 10px;
+	border-radius: 3px;
+	border: 1px solid gray;
+	color: #414141;
+	text-shadow: 0 1px 0 #F7F7F7;
+	font-weight: bold;
+	font-size: inherit;
+	background: -moz-linear-gradient(top, #ffffff 0%, #dddddd 8%, #cccccc 100%);
+	background: -webkit-linear-gradient(top, #ffffff 0%, #dddddd 8%, #cccccc 100%);
+	background: -ms-linear-gradient(top, #ffffff 0%, #dddddd 8%, #cccccc 100%);
 }
 
 #drawArea {
 	position: relative;
-	width: 100%;
-	height: 100%;
+	width: 800px;
+	height: 600px;
 }
 
 #drawArea > canvas {
@@ -27,5 +43,11 @@ html, body {
 }
 
 #message {
-  display: none;
+	display: none;
+}
+
+.mainWrap {
+	width: 800px;
+	height: 100%;
+	margin: auto;
 }
