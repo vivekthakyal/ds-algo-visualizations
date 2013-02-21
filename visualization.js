@@ -3,13 +3,9 @@ var COLOR = {
 	BLACK: 1
 };
 
-function init() {
-	var input = generateRandomArray(64, 0, 100);
-	var tree = new Tree();
-	for(var i = 0; i < input.length; i++) {
-		tree.insert(input[i], input[i]);
-	}
+var SIZE_WEIGHTED = true;
 
+function init() {
 	var canvasFg = document.getElementById('layerFg');
 	var canvasBg = document.getElementById('layerBg');
 
@@ -20,9 +16,35 @@ function init() {
 		var ctxFg = canvasFg.getContext('2d');
 		var ctxBg = canvasBg.getContext('2d');
 
-		ctxFg.fillStyle = 'rgb(255, 214, 108)';
+		ctxFg.fillStyle = '#7A1F1F';
+		ctxFg.strokeStyle = '#CBCBCB';
+		ctxFg.lineWidth = 3;
+		var tree = generateBST();
 		tree.draw(ctxFg, ctxBg, canvasFg.width, canvasFg.height);
 	}
+
+	document.getElementById('reset').onclick = function() {
+		ctxFg.clearRect(0, 0, canvasFg.width, canvasFg.height);
+		ctxBg.clearRect(0, 0, canvasBg.width, canvasBg.height);
+		tree = generateBST();
+		tree.draw(ctxFg, ctxBg, canvasFg.width, canvasFg.height);
+	};
+
+	document.getElementById('toggleWeighted').onclick = function() {
+		SIZE_WEIGHTED = !SIZE_WEIGHTED;
+		ctxFg.clearRect(0, 0, canvasFg.width, canvasFg.height);
+		ctxBg.clearRect(0, 0, canvasBg.width, canvasBg.height);
+		tree.draw(ctxFg, ctxBg, canvasFg.width, canvasFg.height);
+	};
+}
+
+function generateBST() {
+	var input = generateRandomArray(64, 0, 100);
+	var tree = new BinarySearchTree();
+	for(var i = 0; i < input.length; i++) {
+		tree.insert(input[i], input[i]);
+	}
+	return tree;
 }
 
 function generateRandomArray(size, lo, hi) {
