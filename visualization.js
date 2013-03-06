@@ -1,8 +1,3 @@
-var COLOR = {
-	RED: 0,
-	BLACK: 1
-};
-
 var SIZE_WEIGHTED = true;
 
 function init() {
@@ -20,21 +15,21 @@ function init() {
 		ctxFg.strokeStyle = '#CBCBCB';
 		ctxFg.lineWidth = 3;
 		var tree = generateBST();
-		tree.draw(ctxFg, ctxBg, canvasFg.width, canvasFg.height);
+		tree.draw(ctxFg, ctxBg, canvasFg.width, canvasFg.height, SIZE_WEIGHTED);
 	}
 
 	document.getElementById('reset').onclick = function() {
 		ctxFg.clearRect(0, 0, canvasFg.width, canvasFg.height);
 		ctxBg.clearRect(0, 0, canvasBg.width, canvasBg.height);
 		tree = generateBST();
-		tree.draw(ctxFg, ctxBg, canvasFg.width, canvasFg.height);
+		tree.draw(ctxFg, ctxBg, canvasFg.width, canvasFg.height, SIZE_WEIGHTED);
 	};
 
 	document.getElementById('toggleWeighted').onclick = function() {
 		SIZE_WEIGHTED = !SIZE_WEIGHTED;
 		ctxFg.clearRect(0, 0, canvasFg.width, canvasFg.height);
 		ctxBg.clearRect(0, 0, canvasBg.width, canvasBg.height);
-		tree.draw(ctxFg, ctxBg, canvasFg.width, canvasFg.height);
+		tree.draw(ctxFg, ctxBg, canvasFg.width, canvasFg.height, SIZE_WEIGHTED);
 	};
 }
 
