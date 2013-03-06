@@ -9,11 +9,9 @@ function Node(key, value) {
 	this.value_ = value;
 	this.left_ = null;
 	this.right_ = null;
-	this.color_ = COLOR.RED;
 
 	this.size_ = 1;
 	this.height_ = 0;
-	this.width_ = 1;
 }
 
 /**
@@ -73,20 +71,20 @@ BinarySearchTree.prototype.height_ = function () {
  * width - width of the canvas
  * height - height of the canvas
  */
-BinarySearchTree.prototype.draw = function (ctxFg, ctxBg, width, height) {
+BinarySearchTree.prototype.draw = function (ctxFg, ctxBg, width, height, spreadNodes) {
 	var minX = width * 0.05;
 	var maxX = width - minX;
 	var minY = height * 0.05;
 	var maxY = height - minY;
 
 	ctxBg.beginPath();
-	drawImpl_(ctxFg, ctxBg, this.root_, minX, maxX, minY, (maxY - minY)/this.height_());
+	drawImpl_(ctxFg, ctxBg, this.root_, minX, maxX, minY, (maxY - minY)/this.height_(), spreadNodes);
 	ctxBg.stroke();
 	ctxBg.closePath();
 };
 
-function drawImpl_(ctxFg, ctxBg, node, xMin, xMax, y, yIncr) {
-	var xSplit = xMin + (xMax - xMin) * sizeWeightedRatio_(node);
+function drawImpl_(ctxFg, ctxBg, node, xMin, xMax, y, yIncr, spreadNodes) {
+	var xSplit = xMin + (xMax - xMin) * (spreadNodes ? sizeWeightedRatio_(node) : 0.5);
 	var x = (xMax + xMin) / 2;
 	ctxFg.beginPath();
 	ctxFg.fillStyle = '#306BA2';
@@ -106,20 +104,16 @@ function drawImpl_(ctxFg, ctxBg, node, xMin, xMax, y, yIncr) {
 
 	if (node.left_ !== null) {
 		ctxBg.moveTo(x, y);
-		drawImpl_(ctxFg, ctxBg, node.left_, xMin, xSplit, y + yIncr, yIncr);
+		drawImpl_(ctxFg, ctxBg, node.left_, xMin, xSplit, y + yIncr, yIncr, spreadNodes);
 	}
 
 	if (node.right_ !== null) {
 		ctxBg.moveTo(x, y);
-		drawImpl_(ctxFg, ctxBg, node.right_, xSplit, xMax, y + yIncr, yIncr);
+		drawImpl_(ctxFg, ctxBg, node.right_, xSplit, xMax, y + yIncr, yIncr, spreadNodes);
 	}
 }
 
 function sizeWeightedRatio_(node) {
-	if (!SIZE_WEIGHTED) {
-		return 0.5;
-	}
-
 	if (nodeSize_(node.left_) == nodeSize_(node.right_)) {
 		return 0.5;
 	}
@@ -145,7 +139,6 @@ function insertImpl_(node, key, value) {
 	}
 
 	node.size_ = nodeSize_(node.left_) + nodeSize_(node.right_) + 1;
-	node.width_ = nodeWidth_(node.left_) + nodeWidth_(node.right_);
 	node.height_ = Math.max(nodeHeight_(node.left_), nodeHeight_(node.right_)) + 1;
 
 	return node;
@@ -159,10 +152,6 @@ function heightImpl_(node) {
 
 function nodeSize_(node) {
 	return node === null ? 0 : node.size_;
-}
-
-function nodeWidth_(node) {
-	return node === null ? 0 : node.width_;
 }
 
 function nodeHeight_(node) {
