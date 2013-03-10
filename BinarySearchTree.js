@@ -79,12 +79,17 @@ vktl.bst.BinarySearchTree.prototype.draw = function (ctxFg, ctxBg, width, height
     var minY = height * 0.05;
     var maxY = height - minY;
 
+    ctxFg.clearRect(0, 0, width, height);
+    ctxBg.clearRect(0, 0, width, height);
+
     ctxBg.beginPath();
     this.drawImpl_(ctxFg, ctxBg, this.root_, minX, maxX, minY, (maxY - minY)/this.height_(), spreadNodes);
     ctxBg.closePath();
 };
 
 vktl.bst.BinarySearchTree.prototype.drawImpl_ = function (ctxFg, ctxBg, node, xMin, xMax, y, yIncr, spreadNodes) {
+    if (node === null) return;
+
     var xSplit = xMin + (xMax - xMin) * (spreadNodes ? this.sizeWeightedRatio_(node) : 0.5);
     var x = (xMax + xMin) / 2;
     ctxFg.beginPath();

@@ -173,22 +173,27 @@ vktl.rbt.RedBlackTree.prototype.draw = function (ctxFg, ctxBg, width, height, sp
     var minY = height * 0.05;
     var maxY = height - minY;
 
+    ctxFg.clearRect(0, 0, width, height);
+    ctxBg.clearRect(0, 0, width, height);
+
     ctxBg.beginPath();
     this.drawImpl_(ctxFg, ctxBg, this.root_, minX, maxX, minY, (maxY - minY)/this.height_(), spreadNodes);
     ctxBg.closePath();
 };
 
 vktl.rbt.RedBlackTree.prototype.drawImpl_ = function(ctxFg, ctxBg, node, xMin, xMax, y, yIncr, spreadNodes) {
+    if (node === null) return;
+
     var xSplit = xMin + (xMax - xMin) * (spreadNodes ? this.sizeWeightedRatio_(node) : 0.5);
     var x = (xMax + xMin) / 2;
     ctxFg.beginPath();
     ctxFg.fillStyle = '#FFFFFF';
     ctxFg.strokeStyle = this.isRed_(node) ? '#FF0000' : '#000000';
-    ctxFg.arc(x, y, 10, 0, Math.PI * 2, true);
+    ctxFg.arc(x, y, 11, 0, Math.PI * 2, true);
     ctxFg.fill();
     ctxFg.stroke();
     ctxFg.fillStyle = '#000000';
-    ctxFg.font = 'bold 11px serif';
+    ctxFg.font = 'bold 11px sans-serif';
 
     // the numbers used for positioning the text are a result of guided hit and trial.
     // I need a better way to auto calculate the position based on the font-family and
