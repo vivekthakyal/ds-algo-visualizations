@@ -2,19 +2,25 @@
 <html>
    <head>
       <link rel='stylesheet' type='text/css' href='visualization.css'></link>
+      <link href='http://fonts.googleapis.com/css?family=Lato:400' rel='stylesheet' type='text/css'>
+      <script src='jquery-1.9.1.min.js'></script>
       <script src='visualization.js'></script>
       <script src='BinarySearchTree.js'></script>
       <script src='RedBlackTree.js'></script>
    </head>
-   <body onload='init()'>
+   <body>
+      <h1 id='heading'>Left-Leaning Red Black BST</h1>
       <div class='mainWrap'>
+         <div class='controlsRow'>
+            <button id='reset' value='Reset'><span class='reloadIcon'>Random input</span></button><!--
+            --><button id='manualInput' value='manualInput'>Try your own input</button>
+            <div id='treeKeysWrapper'>
+               <input id='treeKeys' type='text' placeholder='Enter space separated numbers (with upto three digits each)'></input>
+            </div>
+         </div>
          <div id='drawArea'>
             <canvas id='layerFg'></canvas>
             <canvas id='layerBg'></canvas>
-         </div>
-         <div class='controlsRow'>
-            <button id='reset' value='Reset'>Regenerate BST</button>
-            <input id='toggleWeighted' type='checkbox' checked>Spread nodes out</button>
          </div>
       </div>
       <div id='message'>This demo works only with Firefox 4+ and Google Chrome 10+</div>
