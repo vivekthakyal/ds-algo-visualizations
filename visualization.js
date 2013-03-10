@@ -11,9 +11,8 @@ function init() {
         var ctxFg = canvasFg.getContext('2d');
         var ctxBg = canvasBg.getContext('2d');
 
-        ctxFg.fillStyle = '#7A1F1F';
-        ctxFg.strokeStyle = '#CBCBCB';
-        ctxFg.lineWidth = 3;
+        ctxFg.lineWidth = 1.5;
+        ctxBg.lineWidth = 1.5;
         var tree = generateBST();
         tree.draw(ctxFg, ctxBg, canvasFg.width, canvasFg.height, SIZE_WEIGHTED);
     }
@@ -34,8 +33,8 @@ function init() {
 }
 
 function generateBST() {
-    var input = generateRandomArray(64, 0, 100);
-    var tree = new BinarySearchTree();
+    var input = generateRandomArray(64, 0, 150);
+    var tree = new vktl.rbt.RedBlackTree();
     for(var i = 0; i < input.length; i++) {
         tree.insert(input[i], input[i]);
     }

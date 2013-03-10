@@ -1,47 +1,51 @@
+var vktl = vktl || {};
+vktl.bst = {
+    /**
+     * Creates a tree node
+     *
+     * @param key - the key
+     * @param value - the value associated with the key
+     */
+    Node : function(key, value) {
+        this.key_ = key;
+        this.value_ = value;
+        this.left_ = null;
+        this.right_ = null;
+
+        this.size_ = 1;
+        this.height_ = 0;
+    },
+
+    /**
+     * Creates a binary search tree object with a null root
+     */
+    BinarySearchTree : function() {
+        this.root_ = null;
+    }
+};
+
+
 /**
- * Creates a tree node
+ * Inserts a key with its corresponding value into the bst. Updates the value
+ * associated with key if the key is already present in the bst.
  *
  * key - the key
  * value - the value associated with the key
  */
-function Node(key, value) {
-    this.key_ = key;
-    this.value_ = value;
-    this.left_ = null;
-    this.right_ = null;
-
-    this.size_ = 1;
-    this.height_ = 0;
-}
-
-/**
- * Creates a binary search tree object with a null root
- */
-function BinarySearchTree() {
-    this.root_ = null;
-}
-
-/**
- * Inserts a key with its corresponding value into the BST. Updates the value
- * associated with key if the key is already present in the BST.
- *
- * key - the key
- * value - the value associated with the key
- */
-BinarySearchTree.prototype.insert = function(key, value) {
+vktl.bst.BinarySearchTree.prototype.insert = function(key, value) {
     this.root_ = insertImpl_(this.root_, key, value);
 };
 
-BinarySearchTree.prototype.remove = function(key, value) {
+vktl.bst.BinarySearchTree.prototype.remove = function(key, value) {
     // TODO Hibbard deletion
 };
 
 /**
- * Returns true if the key is present in the BST, false otherwise
+ * Returns true if the key is present in the bst, false otherwise
  *
- * key - the key to search in the BST
+ * key - the key to search in the bst
  */
-BinarySearchTree.prototype.containsKey = function(key) {
+vktl.bst.BinarySearchTree.prototype.containsKey = function(key) {
     var curr = this.root_;
 
     while (curr !== null) {
@@ -57,21 +61,21 @@ BinarySearchTree.prototype.containsKey = function(key) {
 };
 
 /**
- * Returns the height of the BST
+ * Returns the height of the bst
  */
-BinarySearchTree.prototype.height_ = function () {
+vktl.bst.BinarySearchTree.prototype.height_ = function () {
     return heightImpl_(this.root_);
 };
 
 /**
- * Draws the BST on a canvas
+ * Draws the bst on a canvas
  *
  * ctxFg - canvas 2d context for the foreground where the nodes are drawn
  * ctxBg - canvas 2d context for the backaground where the tree edges are drawn
  * width - width of the canvas
  * height - height of the canvas
  */
-BinarySearchTree.prototype.draw = function (ctxFg, ctxBg, width, height, spreadNodes) {
+vktl.bst.BinarySearchTree.prototype.draw = function (ctxFg, ctxBg, width, height, spreadNodes) {
     var minX = width * 0.05;
     var maxX = width - minX;
     var minY = height * 0.05;
@@ -126,7 +130,7 @@ function sizeWeightedRatio_(node) {
 
 function insertImpl_(node, key, value) {
     if (node === null) {
-        node = new Node(key, value);
+        node = new vktl.bst.Node(key, value);
         return node;
     }
 
