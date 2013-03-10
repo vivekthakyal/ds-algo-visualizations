@@ -11,9 +11,7 @@ vktl.bst = {
         this.value_ = value;
         this.left_ = null;
         this.right_ = null;
-
         this.size_ = 1;
-        this.height_ = 0;
     },
 
     /**
@@ -33,7 +31,7 @@ vktl.bst = {
  * value - the value associated with the key
  */
 vktl.bst.BinarySearchTree.prototype.insert = function(key, value) {
-    this.root_ = insertImpl_(this.root_, key, value);
+    this.root_ = this.insertImpl_(this.root_, key, value);
 };
 
 vktl.bst.BinarySearchTree.prototype.remove = function(key, value) {
@@ -64,7 +62,7 @@ vktl.bst.BinarySearchTree.prototype.containsKey = function(key) {
  * Returns the height of the bst
  */
 vktl.bst.BinarySearchTree.prototype.height_ = function () {
-    return heightImpl_(this.root_);
+    return this.heightImpl_(this.root_);
 };
 
 /**
@@ -82,20 +80,19 @@ vktl.bst.BinarySearchTree.prototype.draw = function (ctxFg, ctxBg, width, height
     var maxY = height - minY;
 
     ctxBg.beginPath();
-    drawImpl_(ctxFg, ctxBg, this.root_, minX, maxX, minY, (maxY - minY)/this.height_(), spreadNodes);
-    ctxBg.stroke();
+    this.drawImpl_(ctxFg, ctxBg, this.root_, minX, maxX, minY, (maxY - minY)/this.height_(), spreadNodes);
     ctxBg.closePath();
 };
 
-function drawImpl_(ctxFg, ctxBg, node, xMin, xMax, y, yIncr, spreadNodes) {
-    var xSplit = xMin + (xMax - xMin) * (spreadNodes ? sizeWeightedRatio_(node) : 0.5);
+vktl.bst.BinarySearchTree.prototype.drawImpl_ = function (ctxFg, ctxBg, node, xMin, xMax, y, yIncr, spreadNodes) {
+    var xSplit = xMin + (xMax - xMin) * (spreadNodes ? this.sizeWeightedRatio_(node) : 0.5);
     var x = (xMax + xMin) / 2;
     ctxFg.beginPath();
-    ctxFg.fillStyle = '#306BA2';
+    ctxFg.fillStyle = '#FFFFFF';
     ctxFg.arc(x, y, 10, 0, Math.PI * 2, true);
     ctxFg.fill();
     ctxFg.stroke();
-    ctxFg.fillStyle = '#FFFFFF';
+    ctxFg.fillStyle = '#000000';
     ctxFg.font = 'bold 12px serif';
 
     // the numbers used for positioning the text are a result of guided hit and trial.
@@ -105,59 +102,57 @@ function drawImpl_(ctxFg, ctxBg, node, xMin, xMax, y, yIncr, spreadNodes) {
     ctxFg.closePath();
 
     ctxBg.lineTo(x, y);
+    ctxBg.stroke();
+    ctxBg.closePath();
 
     if (node.left_ !== null) {
+        ctxBg.beginPath();
         ctxBg.moveTo(x, y);
-        drawImpl_(ctxFg, ctxBg, node.left_, xMin, xSplit, y + yIncr, yIncr, spreadNodes);
+        this.drawImpl_(ctxFg, ctxBg, node.left_, xMin, xSplit, y + yIncr, yIncr, spreadNodes);
     }
 
     if (node.right_ !== null) {
+        ctxBg.beginPath();
         ctxBg.moveTo(x, y);
-        drawImpl_(ctxFg, ctxBg, node.right_, xSplit, xMax, y + yIncr, yIncr, spreadNodes);
+        this.drawImpl_(ctxFg, ctxBg, node.right_, xSplit, xMax, y + yIncr, yIncr, spreadNodes);
     }
-}
+};
 
-function sizeWeightedRatio_(node) {
-    if (nodeSize_(node.left_) == nodeSize_(node.right_)) {
+vktl.bst.BinarySearchTree.prototype.sizeWeightedRatio_ = function(node) {
+    if (this.nodeSize_(node.left_) == this.nodeSize_(node.right_)) {
         return 0.5;
     }
 
     // return a non-zero ratio if the left child is null, otherwise subsequent nodes
     // with a null left child will get rendered right on the left bound all one directly
     // under the other vertically
-    var alpha = 0.2; return node.left_ === null ? alpha : (nodeSize_(node.left_) / nodeSize_(node));
-}
+    var alpha = 0.2; return node.left_ === null ? alpha : (this.nodeSize_(node.left_) / this.nodeSize_(node));
+};
 
-function insertImpl_(node, key, value) {
+vktl.bst.BinarySearchTree.prototype.insertImpl_ = function(node, key, value) {
     if (node === null) {
         node = new vktl.bst.Node(key, value);
         return node;
     }
 
     if (key < node.key_) {
-        node.left_ = insertImpl_(node.left_, key, value);
+        node.left_ = this.insertImpl_(node.left_, key, value);
     } else if (key > node.key_) {
-        node.right_ = insertImpl_(node.right_, key, value);
+        node.right_ = this.insertImpl_(node.right_, key, value);
     } else {
         node.value_ = value;
     }
-
-    node.size_ = nodeSize_(node.left_) + nodeSize_(node.right_) + 1;
-    node.height_ = Math.max(nodeHeight_(node.left_), nodeHeight_(node.right_)) + 1;
+    node.size_ = this.nodeSize_(node.left_) + this.nodeSize_(node.right_) + 1;
 
     return node;
-}
+};
 
 
-function heightImpl_(node) {
-    if (node === null) return 0;
-    return Math.max(heightImpl_(node.left_), heightImpl_(node.right_)) + 1;
-}
+vktl.bst.BinarySearchTree.prototype.heightImpl_ = function(node) {
+    if (node === null || (node.left_ === null && node.right_ === null)) return 0;
+    return Math.max(this.heightImpl_(node.left_), this.heightImpl_(node.right_)) + 1;
+};
 
-function nodeSize_(node) {
+vktl.bst.BinarySearchTree.prototype.nodeSize_ = function(node) {
     return node === null ? 0 : node.size_;
-}
-
-function nodeHeight_(node) {
-    return node === null ? 0 : node.height_;
-}
+};

@@ -53,14 +53,14 @@ vktl.rbt.RedBlackTree.prototype.getValue = function(key) {
         } else if (key < node.key_) {
             node = node.left_;
         } else {
-            node = node.right;
+            node = node.right_;
         }
     }
     return null;
 };
 
 vktl.rbt.RedBlackTree.prototype.remove = function(key) {
-
+    // TODO top down 2-3-4 deletion
 };
 
 vktl.rbt.RedBlackTree.prototype.containsKey = function(key) {
