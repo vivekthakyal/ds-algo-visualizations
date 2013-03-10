@@ -8,14 +8,23 @@ html, body {
     line-height: 16px;
 }
 
+li {
+    list-style: none;
+}
+
+ol {
+    margin: 0;
+    padding: 0;
+}
+
 h1 {
-    color: #00A2E0;
+    color: #AC2200;
     text-align: center;
-    font-family: 'Lato', Arial, sans-serif;
+    font-family: 'Lato', sans-serif;
     font-weight: 400;
     font-size: 66px;
     line-height: 1em;
-    text-shadow: 1px 2px 0 #005C91;
+    text-shadow: 1px 1px 0 #005C91;
 }
 
 button {
@@ -82,8 +91,7 @@ input[type='text'], textarea {
 
 #layerBg {
     z-index: 0;
-    background-color: #CBEBFF;
-    box-shadow: 0 0 4px rgba(53, 157, 253, 0.25) inset;
+    background-color: #E7E7E7;
 }
 
 #message {
@@ -94,6 +102,15 @@ input[type='text'], textarea {
     margin-top: 10px;
 }
 
+#navMenu {
+    position: fixed;
+    top: 155px;
+    left: 0;
+    width: 200px;
+    background-color: #921D00;
+    color: white;
+}
+
 .mainWrap {
     width: 850px;
     height: 100%;
@@ -102,4 +119,37 @@ input[type='text'], textarea {
 
 .controlsRow {
     margin-top: 10px;
+}
+
+.italicize {
+    font-style: italic;
+    color: black;
+    text-shadow: none;
+}
+
+.menuSectionHeader {
+    font-size: 14px;
+    text-align: center;
+    margin: 20px 5px 0 5px;
+    border-top: 1px dashed rgba(255, 255, 255, 0.3);
+}
+
+.menuSectionHeader > span {
+    position: relative;
+    top: -10px;
+    padding: 0 5px;
+    background-color: #921D00;
+}
+
+.menuList {
+    padding-bottom: 10px;
+}
+
+.menuItem {
+    padding: 10px 10px 10px 20px;
+    cursor: pointer;
+}
+
+.menuItem:hover {
+    background-color: rgb(111, 18, 1);
 }

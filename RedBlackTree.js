@@ -188,7 +188,7 @@ vktl.rbt.RedBlackTree.prototype.drawImpl_ = function(ctxFg, ctxBg, node, xMin, x
     var x = (xMax + xMin) / 2;
     ctxFg.beginPath();
     ctxFg.fillStyle = '#FFFFFF';
-    ctxFg.strokeStyle = this.isRed_(node) ? '#FF0000' : '#000000';
+    ctxFg.strokeStyle = this.isRed_(node) ? '#E02D00' : '#000000';
     ctxFg.arc(x, y, 11, 0, Math.PI * 2, true);
     ctxFg.fill();
     ctxFg.stroke();
@@ -201,7 +201,7 @@ vktl.rbt.RedBlackTree.prototype.drawImpl_ = function(ctxFg, ctxBg, node, xMin, x
     ctxFg.fillText(node.key_, x - node.key_.toString().length * 6/2, y + 9/2);
     ctxFg.closePath();
 
-    ctxBg.strokeStyle = this.isRed_(node) ? '#FF0000' : '#000000';
+    ctxBg.strokeStyle = this.isRed_(node) ? '#E02D00' : '#000000';
     ctxBg.lineWidth = this.isRed_(node) ? 3 : 1.5;
     ctxBg.lineTo(x, y);
     ctxBg.stroke();
