@@ -23,6 +23,7 @@ vktl.rbt = {
      */
     RedBlackTree : function() {
         this.root_ = null;
+        this.renderAs23Tree = false;
     }
 };
 
@@ -142,6 +143,7 @@ vktl.rbt.RedBlackTree.prototype.height_ = function() {
 };
 
 vktl.rbt.RedBlackTree.prototype.heightImpl_ = function (node) {
+    // leaf node has '0' height
     if (node === null || (node.left_ === null && node.right_ === null)) return 0;
     return Math.max(this.heightImpl_(node.left_), this.heightImpl_(node.right_)) + 1;
 };
@@ -151,7 +153,8 @@ vktl.rbt.RedBlackTree.prototype.blackHeight_ = function() {
 };
 
 vktl.rbt.RedBlackTree.prototype.blackHeightImpl_ = function(node) {
-    if (node === null || (node.left_ === null && node.right_ === null)) return 0;
+    // a leaf node has '0' height and the red node should not contribute to the black height of the tree
+    if (node === null || ((this.isRed_(node.left_) || node.left_ === null) && node.right_ === null)) return 0;
     return Math.max(this.blackHeightImpl_(node.left_),this.blackHeightImpl_(node.right_)) + (this.isRed_(node) ? 0 : 1);
 };
 
@@ -162,34 +165,44 @@ vktl.rbt.RedBlackTree.prototype.isRed_ = function (node) {
 /**
  * Draws the bst on a canvas
  *
- * ctxFg - canvas 2d context for the foreground where the nodes are drawn
- * ctxBg - canvas 2d context for the backaground where the tree edges are drawn
- * width - width of the canvas
- * height - height of the canvas
+ * @param ctxFg - canvas 2d context for the foreground where the nodes are drawn
+ * @param ctxBg - canvas 2d context for the backaground where the tree edges are drawn
+ * @param width - width of the canvas
+ * @param height - height of the canvas
  */
 vktl.rbt.RedBlackTree.prototype.draw = function (ctxFg, ctxBg, width, height, spreadNodes) {
-    var minX = width * 0.05;
-    var maxX = width - minX;
-    var minY = height * 0.05;
-    var maxY = height - minY;
+    var padding = 20;
+
+    var minX = padding;
+    var maxX = width - padding;
+    var minY = padding;
+    var maxY = height - padding;
 
     ctxFg.clearRect(0, 0, width, height);
     ctxBg.clearRect(0, 0, width, height);
-
     ctxBg.beginPath();
-    this.drawImpl_(ctxFg, ctxBg, this.root_, minX, maxX, minY, (maxY - minY)/this.height_(), spreadNodes);
+    var yIncr = (maxY - minY) / (this.renderAs23Tree ? this.blackHeight_() : this.height_());
+    this.drawImpl_(ctxFg, ctxBg, this.root_, minX, maxX, minY, yIncr, spreadNodes);
     ctxBg.closePath();
 };
 
 vktl.rbt.RedBlackTree.prototype.drawImpl_ = function(ctxFg, ctxBg, node, xMin, xMax, y, yIncr, spreadNodes) {
     if (node === null) return;
 
-    var xSplit = xMin + (xMax - xMin) * (spreadNodes ? this.sizeWeightedRatio_(node) : 0.5);
     var x = (xMax + xMin) / 2;
     ctxFg.beginPath();
     ctxFg.fillStyle = '#FFFFFF';
     ctxFg.strokeStyle = this.isRed_(node) ? '#E02D00' : '#000000';
-    ctxFg.arc(x, y, 11, 0, Math.PI * 2, true);
+    var radius = 11;
+    if (this.renderAs23Tree && this.isThreeNode_(node)) {
+        // fillRoundedRect(ctxFg, x - radius, y - 5, 22, 11, 11);
+        ctxFg.arc(x - radius, y, radius, Math.PI * 3/2, Math.PI/2,  true);
+        // ctxFg.moveTo(x + radius, y);
+        ctxFg.arc(x + radius, y, radius, Math.PI/2, Math.PI * 3/2,  true);
+        ctxFg.lineTo(x - radius, y - radius);
+    } else {
+        ctxFg.arc(x, y, radius, 0, Math.PI * 2, true);
+    }
     ctxFg.fill();
     ctxFg.stroke();
     ctxFg.fillStyle = '#000000';
@@ -198,7 +211,12 @@ vktl.rbt.RedBlackTree.prototype.drawImpl_ = function(ctxFg, ctxBg, node, xMin, x
     // the numbers used for positioning the text are a result of guided hit and trial.
     // I need a better way to auto calculate the position based on the font-family and
     // font-size
-    ctxFg.fillText(node.key_, x - node.key_.toString().length * 6/2, y + 9/2);
+    if (this.renderAs23Tree && this.isThreeNode_(node)) {
+        ctxFg.fillText(node.left_.key_, x - radius - node.left_.key_.toString().length * 6/2, y + 9/2);
+        ctxFg.fillText(node.key_, x + radius - node.key_.toString().length * 6/2, y + 9/2);
+    } else {
+        ctxFg.fillText(node.key_, x - node.key_.toString().length * 6/2, y + 9/2);
+    }
     ctxFg.closePath();
 
     ctxBg.strokeStyle = this.isRed_(node) ? '#E02D00' : '#000000';
@@ -207,17 +225,45 @@ vktl.rbt.RedBlackTree.prototype.drawImpl_ = function(ctxFg, ctxBg, node, xMin, x
     ctxBg.stroke();
     ctxBg.closePath();
 
-    if (node.left_ !== null) {
-        ctxBg.beginPath();
-        ctxBg.moveTo(x, y);
-        this.drawImpl_(ctxFg, ctxBg, node.left_, xMin, xSplit, y + yIncr, yIncr, spreadNodes);
-    }
+    if (this.renderAs23Tree && this.isThreeNode_(node))  {
+        var xSplit1 = xMin + (xMax - xMin) * (node.left_.left_ === null ? 0 : this.sizeImpl_(node.left_.left_)/this.sizeImpl_(node));
+        var xSplit2 = xSplit1 + (xMax - xMin) * (node.left_.right_ === null ? 0 : this.sizeImpl_(node.left_.right_)/this.sizeImpl_(node));
 
-    if (node.right_ !== null) {
-        ctxBg.beginPath();
-        ctxBg.moveTo(x, y);
-        this.drawImpl_(ctxFg, ctxBg, node.right_, xSplit, xMax, y + yIncr, yIncr, spreadNodes);
+        if (node.left_.left_ !== null) {
+            ctxBg.beginPath();
+            ctxBg.moveTo(x, y);
+            this.drawImpl_(ctxFg, ctxBg, node.left_.left_, xMin, xSplit1, y + yIncr, yIncr, spreadNodes);
+        }
+
+        if (node.left_.right_ !== null) {
+            ctxBg.beginPath();
+            ctxBg.moveTo(x, y);
+            this.drawImpl_(ctxFg, ctxBg, node.left_.right_, xSplit1, xSplit2, y + yIncr, yIncr, spreadNodes);
+        }
+
+        if (node.right_ !== null) {
+            ctxBg.beginPath();
+            ctxBg.moveTo(x, y);
+            this.drawImpl_(ctxFg, ctxBg, node.right_, xSplit2, xMax, y + yIncr, yIncr, spreadNodes);
+        }
+    } else {
+        var xSplit = xMin + (xMax - xMin) * (spreadNodes ? this.sizeWeightedRatio_(node) : 0.5);
+        if (node.left_ !== null) {
+            ctxBg.beginPath();
+            ctxBg.moveTo(x, y);
+            this.drawImpl_(ctxFg, ctxBg, node.left_, xMin, xSplit, y + yIncr, yIncr, spreadNodes);
+        }
+
+        if (node.right_ !== null) {
+            ctxBg.beginPath();
+            ctxBg.moveTo(x, y);
+            this.drawImpl_(ctxFg, ctxBg, node.right_, xSplit, xMax, y + yIncr, yIncr, spreadNodes);
+        }
     }
+};
+
+vktl.rbt.RedBlackTree.prototype.isThreeNode_ = function (node) {
+    return this.isRed_(node.left_);
 };
 
 vktl.rbt.RedBlackTree.prototype.sizeWeightedRatio_ = function(node) {

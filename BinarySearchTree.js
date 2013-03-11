@@ -82,6 +82,11 @@ vktl.bst.BinarySearchTree.prototype.draw = function (ctxFg, ctxBg, width, height
     ctxFg.clearRect(0, 0, width, height);
     ctxBg.clearRect(0, 0, width, height);
 
+    ctxFg.strokeStyle = '#000000';
+    ctxBg.strokeStyle = '#000000';
+    ctxBg.lineWidth = 1.5;
+
+
     ctxBg.beginPath();
     this.drawImpl_(ctxFg, ctxBg, this.root_, minX, maxX, minY, (maxY - minY)/this.height_(), spreadNodes);
     ctxBg.closePath();
@@ -94,11 +99,11 @@ vktl.bst.BinarySearchTree.prototype.drawImpl_ = function (ctxFg, ctxBg, node, xM
     var x = (xMax + xMin) / 2;
     ctxFg.beginPath();
     ctxFg.fillStyle = '#FFFFFF';
-    ctxFg.arc(x, y, 10, 0, Math.PI * 2, true);
+    ctxFg.arc(x, y, 11, 0, Math.PI * 2, true);
     ctxFg.fill();
     ctxFg.stroke();
     ctxFg.fillStyle = '#000000';
-    ctxFg.font = 'bold 12px serif';
+    ctxFg.font = 'bold 11px sans-serif';
 
     // the numbers used for positioning the text are a result of guided hit and trial.
     // I need a better way to auto calculate the position based on the font-family and
