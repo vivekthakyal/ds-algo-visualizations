@@ -64,6 +64,11 @@ vktl.rbt.RedBlackTree.prototype.remove = function(key) {
     // TODO top down 2-3-4 deletion
 };
 
+/**
+ * Tells whether or not a key is present in the the tree
+ * @param key - the key to look for
+ * @returns true if the key is found in the tree, false otherwise
+ */
 vktl.rbt.RedBlackTree.prototype.containsKey = function(key) {
     var node = this.root_;
     while (node !== null) {
@@ -195,10 +200,11 @@ vktl.rbt.RedBlackTree.prototype.drawImpl_ = function(ctxFg, ctxBg, node, xMin, x
     ctxFg.strokeStyle = this.isRed_(node) ? '#E02D00' : '#000000';
     var radius = 11;
     if (this.renderAs23Tree && this.isThreeNode_(node)) {
-        // fillRoundedRect(ctxFg, x - radius, y - 5, 22, 11, 11);
+        // left arc from bottom to top clockwise
         ctxFg.arc(x - radius, y, radius, Math.PI * 3/2, Math.PI/2,  true);
-        // ctxFg.moveTo(x + radius, y);
+        // right arc from top to bottom clockwise
         ctxFg.arc(x + radius, y, radius, Math.PI/2, Math.PI * 3/2,  true);
+        // close the top of the round rectangle
         ctxFg.lineTo(x - radius, y - radius);
     } else {
         ctxFg.arc(x, y, radius, 0, Math.PI * 2, true);
@@ -226,8 +232,13 @@ vktl.rbt.RedBlackTree.prototype.drawImpl_ = function(ctxFg, ctxBg, node, xMin, x
     ctxBg.closePath();
 
     if (this.renderAs23Tree && this.isThreeNode_(node))  {
-        var xSplit1 = xMin + (xMax - xMin) * (node.left_.left_ === null ? 0 : this.sizeImpl_(node.left_.left_)/this.sizeImpl_(node));
-        var xSplit2 = xSplit1 + (xMax - xMin) * (node.left_.right_ === null ? 0 : this.sizeImpl_(node.left_.right_)/this.sizeImpl_(node));
+        // allocate space to the three subtrees based on their relative sizes
+        // ratio = subtree_size / (sub_tree_1_size + sub_tree_2_size + sub_tree_3_size)
+        // Since the parent is a 2-3 node with 2 nodes in it, if we deduct 2 from the parent node's size
+        // we'll get the sum of all the three sub trees.
+        // Therefore: ratio = subtree_size / (parent_23_node_size - 2)
+        var xSplit1 = xMin + (xMax - xMin) * (node.left_.left_ === null ? 0 : this.sizeImpl_(node.left_.left_)/(this.sizeImpl_(node) - 2));
+        var xSplit2 = xSplit1 + (xMax - xMin) * (node.left_.right_ === null ? 0 : this.sizeImpl_(node.left_.right_)/(this.sizeImpl_(node) - 2));
 
         if (node.left_.left_ !== null) {
             ctxBg.beginPath();
