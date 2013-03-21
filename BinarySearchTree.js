@@ -27,8 +27,8 @@ vktl.bst = {
  * Inserts a key with its corresponding value into the bst. Updates the value
  * associated with key if the key is already present in the bst.
  *
- * key - the key
- * value - the value associated with the key
+ * @param key - the key
+ * @param value - the value associated with the key
  */
 vktl.bst.BinarySearchTree.prototype.insert = function(key, value) {
     this.root_ = this.insertImpl_(this.root_, key, value);
@@ -39,9 +39,8 @@ vktl.bst.BinarySearchTree.prototype.remove = function(key, value) {
 };
 
 /**
- * Returns true if the key is present in the bst, false otherwise
- *
- * key - the key to search in the bst
+ * @param key - the key to search in the bst
+ * @returns - true if the key is present in the bst, false otherwise
  */
 vktl.bst.BinarySearchTree.prototype.containsKey = function(key) {
     var curr = this.root_;
@@ -59,7 +58,7 @@ vktl.bst.BinarySearchTree.prototype.containsKey = function(key) {
 };
 
 /**
- * Returns the height of the bst
+ * @returns - the height of the bst
  */
 vktl.bst.BinarySearchTree.prototype.height_ = function () {
     return this.heightImpl_(this.root_);
@@ -68,10 +67,10 @@ vktl.bst.BinarySearchTree.prototype.height_ = function () {
 /**
  * Draws the bst on a canvas
  *
- * ctxFg - canvas 2d context for the foreground where the nodes are drawn
- * ctxBg - canvas 2d context for the backaground where the tree edges are drawn
- * width - width of the canvas
- * height - height of the canvas
+ * @param ctxFg - canvas 2d context for the foreground where the nodes are drawn
+ * @param ctxBg - canvas 2d context for the backaground where the tree edges are drawn
+ * @param width - width of the canvas
+ * @param height - height of the canvas
  */
 vktl.bst.BinarySearchTree.prototype.draw = function (ctxFg, ctxBg, width, height, spreadNodes) {
     var minX = width * 0.05;

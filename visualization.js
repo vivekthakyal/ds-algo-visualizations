@@ -34,7 +34,7 @@ $(document).ready(function() {
         wireUpControls(menuItem);
         //clearCanvas();
         var tree = null;
-        if (menuItem === 'bst' || menuItem === 'rbt') {
+        if (menuItem === 'bst' || menuItem === 'rbt' || menuItem === '23t') {
             if ($('#treeKeys').val() === '') {
                 tree = generateRandomTree(createEmptyTree());
             } else {
@@ -51,18 +51,14 @@ function updateHeading (menuItem) {
         $('#heading').text('Binary Search Tree');
     } else if (menuItem === 'rbt') {
         $('#heading').text('Left Leaning Red Black BST');
+    } else if (menuItem === '23t') {
+        $('#heading').text('2-3 Tree');
     }
 }
 
 function wireUpControls() {
     // $('#treeKeysWrapper').slideUp();
     createEmptyTree();
-
-    if (menuItem === 'bst') {
-        $('#as23TreeWrapper').fadeOut();
-    } else if (menuItem === 'rbt') {
-        $('#as23TreeWrapper').fadeIn();
-    }
 
     $('#treeKeys').keyup(function(event) {
         var tree = generateTreeFromInput(createEmptyTree(), $(this).val());
@@ -113,8 +109,10 @@ function createEmptyTree() {
     if (menuItem === 'bst') {
         return new vktl.bst.BinarySearchTree();
     } else if (menuItem === 'rbt') {
+        return new vktl.rbt.RedBlackTree();
+    } else if (menuItem === '23t') {
         var tree = new vktl.rbt.RedBlackTree();
-        tree.renderAs23Tree = $('#as23Tree').is(':checked');
+        tree.renderAs23Tree = true;
         return tree;
     }
     return null;
