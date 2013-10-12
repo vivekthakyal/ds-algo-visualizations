@@ -39,6 +39,8 @@ vktl.bst.BinarySearchTree.prototype.remove = function(key, value) {
 };
 
 /**
+ * Checks whether or not a key is present in the tree
+ *
  * @param key - the key to search in the bst
  * @returns - true if the key is present in the bst, false otherwise
  */
@@ -58,6 +60,8 @@ vktl.bst.BinarySearchTree.prototype.containsKey = function(key) {
 };
 
 /**
+ * Gets the height of the tree
+ *
  * @returns - the height of the bst
  */
 vktl.bst.BinarySearchTree.prototype.height_ = function () {
@@ -151,6 +155,8 @@ vktl.bst.BinarySearchTree.prototype.insertImpl_ = function(node, key, value) {
     } else {
         node.value_ = value;
     }
+
+    // fix the node size as the recursion unwinds
     node.size_ = this.nodeSize_(node.left_) + this.nodeSize_(node.right_) + 1;
 
     return node;
