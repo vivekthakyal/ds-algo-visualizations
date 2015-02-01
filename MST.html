@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Minimum Spanning Tree</title>
+  <script src="jquery-1.9.1.min.js"></script>
+  <script src="WeightedGraph.js"></script>
+  <script src="BinaryHeap.js"></script>
+  <script src="Prims.js"></script>
+  <script src="MSTSim.js"></script>
+  <script src="Viz.js"></script>
+</head>
+<body>
+  <style>
+    #drawArea {
+      position: relative;
+      width: 850px;
+      height: 500px;
+      /*border: 1px dashed silver;*/
+      margin: auto;
+      margin-top: 50px;
+    }
+    #drawArea > canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+  </style>
+  <div id='drawArea'>
+    <canvas id='layerFg'></canvas>
+    <canvas id='layerBg'></canvas>
+ </div>
+</body>
+</html>
