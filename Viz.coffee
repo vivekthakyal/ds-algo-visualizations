@@ -8,5 +8,5 @@ $( ->
     ctxFg = canvasFg.getContext('2d')
     ctxBg = canvasBg.getContext('2d')
 
-    sim = new GraphSim(new Point(canvasFg.width, canvasFg.height), 10, 30, ctxFg, ctxBg)
+    sim = new GraphSim(new Point(canvasFg.width, canvasFg.height), 1000, 1, ctxFg, ctxBg)
 )

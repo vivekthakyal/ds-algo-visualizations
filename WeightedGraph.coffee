@@ -10,6 +10,9 @@ class @Edge
   getWeight: ->
     @weight
 
+  toString: ->
+    "#{ @v } - #{ @w } [#{ @weight }]"
+
 class @WeightedGraph
 
   constructor: (@size) ->

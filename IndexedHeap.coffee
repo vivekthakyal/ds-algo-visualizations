@@ -22,6 +22,7 @@ class @IndexedHeap
     @size is 0
 
   add: (key, idx) ->
+    # console.log("add - edge: #{ key }, idx: #{ idx }")
     if @isFull() then throw 'Overflow: heap is full'
     @size += 1
     @pq[@size] = idx
@@ -34,11 +35,12 @@ class @IndexedHeap
 
   keyOf: (idx) ->
     if @isEmpty() or !@contains(idx) then throw 'NoSuchElement:'
-    return @keys[@pq[@qp[idx]]]
+    return @keys[idx]
 
   changeKey: (key, idx) ->
+    # console.log("changeKey - edge: #{ key }, idx: #{ idx }")
     if @isEmpty() or !@contains(idx) then throw 'NoSuchElement:'
-    @keys[@pq[@qp[idx]]] = key
+    @keys[idx] = key
     swim(@, @qp[idx])
     sink(@, @qp[idx])
 
@@ -52,6 +54,7 @@ class @IndexedHeap
 
   delMin: ->
     min = @pq[1]
+    # console.log("delMin - minKey: #{ @minKey() }, minIdx: #{ @minIdx() }")
     exch(@, 1, @size)
     @size -= 1
     sink(@, 1)
@@ -71,8 +74,12 @@ class @IndexedHeap
     obj.comp(obj.keys[obj.pq[i]], obj.keys[obj.pq[j]]) > 0
 
   sink = (obj, idx) ->
-    while idx < @size and (greater(obj, idx, leftChild(idx)) or greater(obj, idx, rightChild(idx)))
-      min = if greater(obj, leftChild(idx), rightChild(idx)) then rightChild(idx) else leftChild(idx)
+    while 2 * idx <= obj.size
+      min = leftChild(idx)
+      if min < obj.size and greater(obj, min, rightChild(idx))
+        min = rightChild(idx)
+      if !greater(obj, idx, min)
+        break
       exch(obj, idx, min)
       idx = min
     return
