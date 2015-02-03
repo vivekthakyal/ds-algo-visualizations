@@ -13,12 +13,12 @@ class @GraphSim
     @graph = new WeightedGraph(@numPoints)
     for v in [0..(@numPoints - 2)]
       for w in [v..(@numPoints - 1)]
-        if Math.random() < @connectedness
+        if v isnt w and Math.random() < @connectedness
           @graph.addEdge(v, w, @points[v].squaredDist(@points[w]))
 
     # @drawGraph()
     @drawPoints()
-    @algo = new Prims(@graph, 0)
+    @algo = new Kruskals(@graph)
     @algo.addCallback((e) =>
       @bg.strokeStyle = "#6fc2ef"
       @bg.beginPath()

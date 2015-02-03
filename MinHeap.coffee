@@ -1,7 +1,7 @@
-class @BinaryHeap
+class @MinHeap
   constructor: (@capacity, @comp) ->
     @size = 0
-    @pq = [null]
+    @pq = new Array(@capacity + 1)
     @comp = ((a, b) -> if a < b then -1 else if b < a then 1 else 0) if !@comp?
 
   parent = (idx) ->
@@ -21,9 +21,9 @@ class @BinaryHeap
 
   add: (obj) ->
     if @isFull() then throw 'Overflow: heap is full'
-    @pq.push(obj)
     @size += 1
-    swim(@pq, @size, @comp)
+    @pq[@size] = obj
+    swim(@, @size)
 
   min: ->
     if @isEmpty() then throw 'NoSuchElement: heap is empty'
@@ -33,24 +33,22 @@ class @BinaryHeap
     min = @min()
     swap(@pq, 1, @size)
     @size -= 1
-    sink(@pq, 1, @comp, @size)
+    sink(@, 1)
     return min
 
-  swim = (arr, idx, comp) ->
-    par = parent idx
-    if comp(arr[idx], arr[par]) < 0 and par isnt 0
-      swap(arr, par, idx)
-      swim(arr, par, comp)
+  swim = (obj, idx) ->
+    while idx isnt 1 and obj.comp(obj.pq[idx], obj.pq[parent(idx)]) < 0
+      swap(obj.pq, parent(idx), idx)
+      idx = parent idx
 
-  sink = (arr, idx, comp, size) ->
-    if idx is size
-      return
-    left = leftChild(idx)
-    right = rightChild(idx)
-    min = if right is size or comp(arr[right], arr[left]) < 0 then left else right
-    if comp(arr[min], arr[idx]) < 0
-      swap(arr, min, idx)
-      sink(arr, min, comp, size)
+  sink = (obj, idx) ->
+    while 2 * idx <= obj.size
+      min = leftChild idx
+      if min < obj.size and obj.comp(obj.pq[min], obj.pq[rightChild(idx)]) > 0
+        min = rightChild idx
+      if obj.comp(obj.pq[min], obj.pq[idx]) > 0 then return
+      swap(obj.pq, min, idx)
+      idx = min
 
   swap = (arr, a, b) ->
     tmp = arr[a]
