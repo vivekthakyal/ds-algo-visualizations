@@ -1,4 +1,11 @@
+# An implementaion of an indexed priority queue that allows changing the value
+# of the key of an element in log n time in addition to add and delMin operations.
 class @IndexedHeap
+
+  # Constructor
+  # param: capacity - the max number of elements this heap can hold
+  # param: comp - a function to compare the elements to be added in the heap.
+  #               Default comp function assumes the elements to be numeric.
   constructor: (@capacity, @comp) ->
     @size = 0
     @pq = (-1 for x in [1..(@capacity + 1)])
@@ -21,6 +28,9 @@ class @IndexedHeap
   isEmpty: ->
     @size is 0
 
+  # Adds a new element to the heap
+  # param: key - the key of the element to add
+  # param: idx - index/identifier of the element to add
   add: (key, idx) ->
     # console.log("add - edge: #{ key }, idx: #{ idx }")
     if @isFull() then throw 'Overflow: heap is full'
@@ -30,13 +40,21 @@ class @IndexedHeap
     @keys[idx] = key
     swim(@, @size)
 
+  # Returns true if the an element with the passed index/identifier
+  # is present in the heap, false otherwise
   contains: (idx) ->
     return @qp[idx] isnt -1
 
+  # Returns the key associated with the element having the passed
+  # index/identifier
   keyOf: (idx) ->
     if @isEmpty() or !@contains(idx) then throw 'NoSuchElement:'
     return @keys[idx]
 
+  # Change the key associated with the element having the passed
+  # index/identifier
+  # param: key - the new key
+  # param: idx index/identifier of the element associated with the key
   changeKey: (key, idx) ->
     # console.log("changeKey - edge: #{ key }, idx: #{ idx }")
     if @isEmpty() or !@contains(idx) then throw 'NoSuchElement:'
@@ -44,14 +62,19 @@ class @IndexedHeap
     swim(@, @qp[idx])
     sink(@, @qp[idx])
 
+  # Returns the index/identifier of the element associated with the
+  # smallest key in the heap
   minIdx: ->
     if @isEmpty() then throw 'NoSuchElement: heap is empty'
     @pq[1]
 
+  # Returns the smallest key in the heap
   minKey: ->
     if @isEmpty() then throw 'NoSuchElement: heap is empty'
     @keys[@pq[1]]
 
+  # Deletes the entry corresponding to the element that is associated with the
+  # smallest key in the heap
   delMin: ->
     min = @pq[1]
     # console.log("delMin - minKey: #{ @minKey() }, minIdx: #{ @minIdx() }")

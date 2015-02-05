@@ -1,3 +1,4 @@
+# A class representing a 2-D point
 class @Point
   constructor: (@x, @y) ->
 
@@ -8,6 +9,14 @@ class @Point
     square(@x - other.x) + square(@y - other.y)
 
 class @GraphSim
+  # Constructor
+  #
+  # param: bounds - a point object representing the width and height of the canvas
+  # param: numPoints - number of vertices in the graph
+  # param: connectedness - a float in the range [0 - 1] that represents the connectedness of the
+  #                        graph. No two vertices will be connected if it is 0 and every node will
+  #                        be connected to every other node if connectedness is 1. Any value between
+  #                        0 and 1 will result in varying degree of connectedness.
   constructor: (@bounds, @numPoints, @connectedness, @fg, @bg) ->
     @points = (new Point(randInt(0, @bounds.x), randInt(0, @bounds.y)) for num in [1..@numPoints])
     @graph = new WeightedGraph(@numPoints)
@@ -18,7 +27,7 @@ class @GraphSim
 
     # @drawGraph()
     @drawPoints()
-    @algo = new Kruskals(@graph)
+    @algo = new Kruskals(@graph, 20)
     @algo.addCallback((e) =>
       @bg.strokeStyle = "#6fc2ef"
       @bg.beginPath()

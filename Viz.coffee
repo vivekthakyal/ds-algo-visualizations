@@ -1,3 +1,4 @@
+# Wire up the visualisation
 $( ->
   canvasFg = document.getElementById('layerFg')
   canvasBg = document.getElementById('layerBg')
