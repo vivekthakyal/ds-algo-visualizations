@@ -20,6 +20,7 @@ class @GraphSim
   constructor: (@bounds, @numPoints, @connectedness, @fg, @bg) ->
     @points = (new Point(randInt(0, @bounds.x), randInt(0, @bounds.y)) for num in [1..@numPoints])
     @graph = new WeightedGraph(@numPoints)
+    @components = @numPoints
     for v in [0..(@numPoints - 2)]
       for w in [v..(@numPoints - 1)]
         if v isnt w and Math.random() < @connectedness
@@ -27,20 +28,22 @@ class @GraphSim
 
     # @drawGraph()
     @drawPoints()
-    @algo = new Kruskals(@graph, 20)
+    @algo = new Kruskals(@graph, 1)
     @algo.addCallback((e) =>
-      @bg.strokeStyle = "#6fc2ef"
+      @bg.strokeStyle = "#66cccc"
       @bg.beginPath()
       v = e.getEither()
       w = e.getOther(v)
       @bg.moveTo(@points[v].x, @points[v].y)
       @bg.lineTo(@points[w].x, @points[w].y)
       @bg.stroke()
+      @components -= 1
+      $('.info').text(if @components is 1 then 'Done!!!' else "Connected Components #{ @components }")
       )
     @startSim()
 
   drawPoints: ->
-    @fg.fillStyle = "#fb9fb1"
+    @fg.fillStyle = "#f2777a"
     @fg.beginPath()
     for point, idx in @points
       @fg.moveTo(point.x, point.y)
