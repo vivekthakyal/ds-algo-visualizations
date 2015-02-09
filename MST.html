@@ -7,6 +7,7 @@
     <link href='http://fonts.googleapis.com/css?family=Press+Start+2P' rel='stylesheet' type='text/css'>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="WeightedGraph.js"></script>
+    <script src="GraphGenerator.js"></script>
     <script src="IndexedHeap.js"></script>
     <script src="MinHeap.js"></script>
     <script src="UnionFind.js"></script>
@@ -30,12 +31,14 @@
       font-family: 'Press Start 2P', cursive;
       font-size: 26px;
       color: #747369;
+      margin-top: 0;
       text-shadow: 2px 2px 0 black;
       text-align: center;
     }
     #content {
       width: 850px;
       margin: auto;
+      padding-top: 20px;
     }
     #drawArea {
         position: relative;
@@ -53,7 +56,13 @@
         right: 0;
         bottom: 0;
     }
-    .info {
+    #description {
+        color: #a09f93;
+        font-family: 'Press Start 2P', cursive;
+        line-height: 1.5em;
+        text-shadow: 2px 2px 0px #000000;
+    }
+    #info {
         color: #747369;
         font-family: 'Press Start 2P', cursive;
         text-shadow: 2px 2px 0px #000000;
@@ -65,7 +74,8 @@
             <canvas id='layerBg'></canvas>
             <canvas id='layerFg'></canvas>
         </div>
-        <div class="info"></div>
+        <div id="info"></div>
+        <p id="description">Edges popped into view like a horde of zombies slowly appearing, one after the other, through the fog till they were everywhere. EVERYWHERE!!  :-O</p>
     </div>
 </body>
 

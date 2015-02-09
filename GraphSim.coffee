@@ -8,6 +8,7 @@ class @Point
   squaredDist: (other) ->
     square(@x - other.x) + square(@y - other.y)
 
+# Simulation harness for graph algorithms
 class @GraphSim
   # Constructor
   #
@@ -18,13 +19,9 @@ class @GraphSim
   #                        be connected to every other node if connectedness is 1. Any value between
   #                        0 and 1 will result in varying degree of connectedness.
   constructor: (@bounds, @numPoints, @connectedness, @fg, @bg) ->
-    @points = (new Point(randInt(0, @bounds.x), randInt(0, @bounds.y)) for num in [1..@numPoints])
-    @graph = new WeightedGraph(@numPoints)
+    @graphGenerator = new GraphGenerator(@bounds)
+    [@points, @graph] = @graphGenerator.generate(@numPoints, @connectedness)
     @components = @numPoints
-    for v in [0..(@numPoints - 2)]
-      for w in [v..(@numPoints - 1)]
-        if v isnt w and Math.random() < @connectedness
-          @graph.addEdge(v, w, @points[v].squaredDist(@points[w]))
 
     # @drawGraph()
     @drawPoints()
@@ -38,7 +35,7 @@ class @GraphSim
       @bg.lineTo(@points[w].x, @points[w].y)
       @bg.stroke()
       @components -= 1
-      $('.info').text(if @components is 1 then 'Done!!!' else "Connected Components #{ @components }")
+      $('#info').text(if @components is 1 then 'Done!!!' else "Connected Components #{ @components }")
       )
     @startSim()
 
@@ -63,6 +60,3 @@ class @GraphSim
 
   startSim: (speed) ->
     @algo.run()
-
-  randInt = (lo, hi) ->
-    Math.floor(Math.random() * (hi - lo) + lo)
