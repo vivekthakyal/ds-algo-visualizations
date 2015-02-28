@@ -1,0 +1,24 @@
+{
+  "name": "ds-algo-visualizations",
+  "version": "1.0.0",
+  "description": "Visualizations for common algorithms",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vivekthakyal/ds-algo-visualizations.git"
+  },
+  "author": "Vivek Thakyal",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vivekthakyal/ds-algo-visualizations/issues"
+  },
+  "homepage": "https://github.com/vivekthakyal/ds-algo-visualizations",
+  "dependencies": {
+    "coffee-script": "^1.9.1",
+    "express": "^4.12.0",
+    "ncp": "^2.0.0"
+  }
+}
