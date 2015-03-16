@@ -18,14 +18,8 @@ class @GraphSim
   #                        graph. No two vertices will be connected if it is 0 and every node will
   #                        be connected to every other node if connectedness is 1. Any value between
   #                        0 and 1 will result in varying degree of connectedness.
-  constructor: (@bounds, @numPoints, @connectedness, @fg, @bg) ->
-    @graphGenerator = new GraphGenerator(@bounds)
-    [@points, @graph] = @graphGenerator.generate(@numPoints, @connectedness)
-    @components = @numPoints
-
-    # @drawGraph()
-    @drawPoints()
-    @algo = new Kruskals(@graph, 1)
+  # constructor: (@bounds, @numPoints, @connectedness, @fg, @bg) ->
+  constructor: (@graph, @points, @algo, @fg, @bg) ->
     @algo.addCallback((e) =>
       @bg.strokeStyle = "#66cccc"
       @bg.beginPath()
@@ -35,9 +29,7 @@ class @GraphSim
       @bg.lineTo(@points[w].x, @points[w].y)
       @bg.stroke()
       @components -= 1
-      $('#info').text(if @components is 1 then 'Done!!!' else "Connected Components #{ @components }")
       )
-    @startSim()
 
   drawPoints: ->
     @fg.fillStyle = "#f2777a"
@@ -59,4 +51,6 @@ class @GraphSim
     @bg.stroke()
 
   startSim: (speed) ->
+    # @drawGraph()
+    @drawPoints()
     @algo.run()
