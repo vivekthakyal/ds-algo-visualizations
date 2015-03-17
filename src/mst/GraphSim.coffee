@@ -54,3 +54,6 @@ class @GraphSim
     # @drawGraph()
     @drawPoints()
     @algo.run()
+
+  stop: ->
+    @algo.stop()

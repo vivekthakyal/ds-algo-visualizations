@@ -19,6 +19,10 @@ class @Kruskals
     @runIteration(result)
     result
 
+  # Stops the algo
+  stop: ->
+    clearTimeout(@handle)
+
   # A helper method to run the algo recursively.
   # This method also notifies any callbacks when
   # a new edge is added to the MST.
@@ -32,7 +36,7 @@ class @Kruskals
       @uf.union(u, v)
       result.push(edge)
       @fire(edge)
-      setTimeout((=> @runIteration(result)), 20)
+      @handle = setTimeout((=> @runIteration(result)), 20)
     else
       @runIteration(result)
 

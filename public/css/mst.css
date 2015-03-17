@@ -1,0 +1,76 @@
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #393939;
+}
+body {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  font-family: 'Press Start 2P', cursive;
+  overflow: none;
+}
+h1 {
+  font-size: 26px;
+  color: #747369;
+  margin-top: 0;
+  text-shadow: 2px 2px 0 black;
+  text-align: center;
+}
+#nav {
+  width: 300px;
+  background-color: #d08770;
+  border-right: 5px solid #bf616a;
+}
+#nav ol {
+  padding: 0;
+  margin: 10px 0 0 0;
+}
+#nav li {
+  color: #393939;
+  list-style: none;
+  padding: 10px;
+  cursor: default;
+}
+#nav li:hover {
+  background-color: #bf616a;
+}
+#content {
+  flex: 1 1 auto;
+  width: 850px;
+  margin: auto;
+  padding-top: 20px;
+  overflow: auto;
+}
+#inner-content {
+  width: 850px;
+  margin: auto;
+}
+#drawArea {
+  position: relative;
+  width: 850px;
+  height: 500px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background-color: #515151;
+}
+#drawArea > canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+#description {
+  color: #a09f93;
+  font-family: 'Press Start 2P', cursive;
+  line-height: 1.5em;
+  text-shadow: 2px 2px 0px #000000;
+}
+#info {
+  color: #747369;
+  font-family: 'Press Start 2P', cursive;
+  text-shadow: 2px 2px 0px #000000;
+}

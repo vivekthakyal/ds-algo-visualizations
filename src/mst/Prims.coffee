@@ -18,6 +18,9 @@ class @Prims
     @runIteration(marked, result)
     result
 
+  stop: ->
+    clearTimeout(@handle)
+
   # A helper method to run the algo recursively.
   # This method also notifies any callbacks when
   # a new edge is added to the MST.
@@ -39,7 +42,7 @@ class @Prims
             @pq.changeKey(e, w)
         else
           @pq.add(e, w)
-    setTimeout((=> @runIteration(marked, result)), 50)
+    @handle = setTimeout((=> @runIteration(marked, result)), 50)
 
   # Invokes all registered callbacks with the new edge
   # that was just added to the MST by the algo
