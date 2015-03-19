@@ -7,8 +7,11 @@ html, body {
 }
 body {
   display: flex;
+  display: -webkit-flex;
   align-items: stretch;
+  -webkit-align-items: stretch;
   justify-content: space-between;
+  -webkit-justify-content: space-between;
   font-family: 'Press Start 2P', cursive;
   overflow: none;
 }
@@ -39,6 +42,7 @@ h1 {
 }
 #content {
   flex: 1 1 auto;
+  -webkit-flex: 1 1 auto;
   width: 850px;
   margin: auto;
   padding-top: 20px;
